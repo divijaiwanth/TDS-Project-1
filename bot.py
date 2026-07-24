@@ -8,6 +8,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
 
 # --- fill these in with your own values ---
+GITHUB_REPO = "divijaiwanth/TDS-Project-1"
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 AIPIPE_TOKEN = os.environ["AIPIPE_TOKEN"]
 LOG_URL = "https://raw.githubusercontent.com/divijaiwanth/TDS-Project-1/refs/heads/main/run.jsonl"  # see Step 5 — where run.jsonl will be hosted
@@ -19,6 +20,17 @@ LOG_FILE = "run.jsonl"
 # Keeps the last few messages per chat, so multi-turn questions work —
 # "answer the LAST message" still needs the earlier ones for context.
 conversation_history = {}
+def push_log():
+    try:
+        token = os.environ["GITHUB_TOKEN"]
+        os.system(f'git remote set-url origin https://{token}@github.com/{GITHUB_REPO}.git')
+        os.system('git config user.email "bot@example.com"')
+        os.system('git config user.name "Telegram Bot"')
+        os.system('git add run.jsonl')
+        os.system('git commit -m "log update"')
+        os.system('git push')
+    except Exception as e:
+        print(f"Push failed: {e}")
 
 def log_event(event: dict):
     event["timestamp"] = time.time()
@@ -65,6 +77,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     log_event({"type": "outgoing", "chat_id": chat_id, "text": final_reply})
     await update.message.reply_text(final_reply)
+    push_log()
 
 app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
