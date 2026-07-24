@@ -1,0 +1,12 @@
+{"type": "incoming", "chat_id": 5495918343, "text": "What is 15% of 200? Reply with ONLY this JSON: {\"answer\": , \"log_url\": \"...\"}", "timestamp": 1784916414.9451566}
+{"type": "outgoing", "chat_id": 5495918343, "text": "{\"answer\": 30, \"log_url\": \"PASTE_YOUR_PUBLIC_LOG_URL_HERE\"}", "timestamp": 1784916422.5074883}
+{"type": "incoming", "chat_id": 5495918343, "text": "What is 15% of 240? Reply with ONLY this JSON: {\"answer\": <number>}", "timestamp": 1784918135.5748563}
+{"type": "outgoing", "chat_id": 5495918343, "text": "{\"answer\": 36, \"log_url\": \"PASTE_YOUR_PUBLIC_LOG_URL_HERE\"}", "timestamp": 1784918139.0412414}
+{"type": "incoming", "chat_id": 5495918343, "text": "What is the capital of Karnataka? Reply with ONLY this JSON: {\"city\": \"<city name>\"}", "timestamp": 1784918149.2135572}
+{"type": "outgoing", "chat_id": 5495918343, "text": "{\"city\": \"Bengaluru\", \"log_url\": \"PASTE_YOUR_PUBLIC_LOG_URL_HERE\"}", "timestamp": 1784918151.8059926}
+{"type": "incoming", "chat_id": 5495918343, "text": "What is the capital of Karnataka? Reply with ONLY this JSON: {\"city\": \"<city name>\"}", "timestamp": 1784918698.1948571}
+{"type": "outgoing", "chat_id": 5495918343, "text": "{\"city\": \"Bengaluru\"}", "timestamp": 1784918702.4288695}
+{"type": "incoming", "chat_id": 5495918343, "text": "What is 15% of 240? Reply with ONLY this JSON: {\"answer\": <number>}", "timestamp": 1784918758.2348075}
+{"type": "outgoing", "chat_id": 5495918343, "text": "{\"answer\": 36}", "timestamp": 1784918761.6352544}
+{"type": "incoming", "chat_id": 5495918343, "text": "List the first 5 prime numbers. Reply with ONLY this JSON: {\"primes\": [<numbers>]}", "timestamp": 1784918849.9696763}
+{"type": "outgoing", "chat_id": 5495918343, "text": "{\"primes\": [2, 3, 5, 7, 11]}", "timestamp": 1784918852.4338732}
