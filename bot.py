@@ -20,15 +20,40 @@ LOG_FILE = "run.jsonl"
 # Keeps the last few messages per chat, so multi-turn questions work —
 # "answer the LAST message" still needs the earlier ones for context.
 conversation_history = {}
+import requests
+import base64
+
+GITHUB_REPO = "divijaiwanth/TDS-Project-1"  # your username/repo
+GITHUB_FILE_PATH = "run.jsonl"
+
 def push_log():
     try:
         token = os.environ["GITHUB_TOKEN"]
-        os.system(f'git remote set-url origin https://{token}@github.com/{GITHUB_REPO}.git')
-        os.system('git config user.email "bot@example.com"')
-        os.system('git config user.name "Telegram Bot"')
-        os.system('git add run.jsonl')
-        os.system('git commit -m "log update"')
-        os.system('git push')
+        api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_FILE_PATH}"
+        headers = {
+            "Authorization": f"token {token}",
+            "Accept": "application/vnd.github+json"
+        }
+
+        # Read current local log file content
+        with open(LOG_FILE, "r") as f:
+            content = f.read()
+        encoded_content = base64.b64encode(content.encode()).decode()
+
+        # Get the current file's SHA (required by GitHub API to update an existing file)
+        get_resp = requests.get(api_url, headers=headers)
+        sha = get_resp.json().get("sha") if get_resp.status_code == 200 else None
+
+        payload = {
+            "message": "log update",
+            "content": encoded_content,
+        }
+        if sha:
+            payload["sha"] = sha
+
+        put_resp = requests.put(api_url, headers=headers, json=payload)
+        if put_resp.status_code not in (200, 201):
+            print(f"Push failed: {put_resp.status_code} {put_resp.text}")
     except Exception as e:
         print(f"Push failed: {e}")
 
@@ -76,9 +101,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     final_reply = json.dumps(parsed)
 
     log_event({"type": "outgoing", "chat_id": chat_id, "text": final_reply})
-    await update.message.reply_text(final_reply)
     push_log()
-
+    await update.message.reply_text(final_reply)
 app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 print("Bot is running... (Ctrl+C to stop)")
