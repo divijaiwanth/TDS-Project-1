@@ -96,9 +96,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Model added extra text — try to pull out just the {...} part.
         start, end = reply_text.find("{"), reply_text.rfind("}")
         parsed = json.loads(reply_text[start:end + 1])
-    if "log_url" in user_text:
         parsed["log_url"] = LOG_URL
-    final_reply = json.dumps(parsed)
+        final_reply = json.dumps(parsed)
 
     log_event({"type": "outgoing", "chat_id": chat_id, "text": final_reply})
     push_log()
