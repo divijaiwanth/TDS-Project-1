@@ -93,8 +93,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parsed = {"error": "could not parse model reply", "raw": reply_text}
 
     # Always include log_url now, on every reply.
-    parsed["log_url"] = LOG_URL
-    final_reply = json.dumps(parsed)
+    final_reply = json.dumps({
+        "answer": parsed,
+        "log_url": LOG_URL
+    })
 
     log_event({"type": "outgoing", "chat_id": chat_id, "text": final_reply})
     push_log()
